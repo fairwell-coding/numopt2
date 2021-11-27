@@ -7,9 +7,11 @@ IMPORTANT:
 - Do not change the existing interface and return values of the task functions.
 - Prior to your submission, check that the pdf showing your plots is generated.
 """
+from math import sqrt
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.linalg import inv
 from matplotlib.backends.backend_pdf import PdfPages
@@ -26,7 +28,7 @@ def task1():
             - ax[2] Contour plot for c)
     """
 
-    fig, ax = plt.subplots(1, 3, figsize=(18,6))
+    fig, ax = plt.subplots(1, 3, figsize=(18, 6))
     fig.suptitle('Task 1 - Contour plots + Constraints', fontsize=16)
 
     ax[0].set_title('a)')
@@ -47,17 +49,75 @@ def task1():
 
     """ Start of your code
     """
-    # Plot example (remove in submission)
-    x1, x2 = np.meshgrid(np.linspace(-5, 5), np.linspace(-5, 5))
-    ax[0].contourf(x1, x2, x1**2 + x2**2, 100, cmap='gist_rainbow')
-    ax[0].plot(np.linspace(-5, 5), np.linspace(-5, 5) + 1)
-    ax[0].scatter(-1/2, 1/2)
-    ax[0].set_xlim([-5, 5])
-    ax[0].set_ylim([-5, 5])
+
+    plot_1a(ax)
+    plot_1b(ax)
+    plot_1c(ax)
 
     """ End of your code
     """
     return fig
+
+
+def plot_1c(ax):
+    x_min = -3
+    x_max = 3
+    y_min = -3
+    y_max = 3
+    x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
+    ax[2].contourf(x1, x2, (x1 - 1)**2 + x1 * x2**2 - 2, 100, cmap='gist_rainbow')
+    ax[2].add_patch(Circle((0, 0), radius=2, color='purple', fill=False))  # inequality constraint: x1**2 + x2**2 <= 4
+
+    ax[2].plot(0, sqrt(2), color='green', marker="x", markersize=8)
+    ax[2].annotate("S1(0|sqrt(2))", (0 + 0.2, sqrt(2) + 0.2), color='green')
+
+    ax[2].plot(0, -sqrt(2), color='green', marker="x", markersize=8)
+    ax[2].annotate("S2(0|-sqrt(2))", (0 + 0.2, -sqrt(2) + 0.2), color='green')
+
+    ax[2].plot(1, 0, color='green', marker="x", markersize=8)
+    ax[2].annotate("S3(1|0)", (1 + 0.2, 0 + 0.2), color='green')
+
+    ax[2].plot(-0.55, 1.92, color='green', marker="x", markersize=8)
+    ax[2].annotate("S4(-0.55|1.92)", (-0.55 + 0.2, 1.92 + 0.2), color='green')
+
+    ax[2].plot(-0.55, -1.92, color='green', marker="x", markersize=8)
+    ax[2].annotate("S5(-0.55|-1.92)", (-0.55 - 0.3, -1.92 - 0.3), color='green')
+
+    # TODO: add labels for constraints
+
+
+def plot_1b(ax):
+    x_min = -2
+    x_max = 10
+    y_min = -7
+    y_max = 7
+    x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
+    ax[1].contourf(x1, x2, x1**2 + x2**2, 100, cmap='gist_rainbow')
+    ax[1].plot(np.linspace(x_min, x_max), 3 - np.linspace(x_min, x_max), color='purple')  # inequality constraint
+    ax[1].plot(np.linspace(x_min, x_max), np.linspace(2, 2), color='purple')  # inequality constraint
+
+    # optimal solution: S1(1|2)
+    ax[1].plot(1, 2, color='blue', marker="x", markersize=8)
+    ax[1].annotate("S1(1|2)", (1 + 0.2, 2 + 0.2), color='blue')
+
+    # TODO: add labels for constraints
+
+
+def plot_1a(ax):
+    x_min = -2
+    x_max = 10
+    y_min = -5
+    y_max = 7
+    x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
+    ax[0].contourf(x1, x2, x2 - x1, 100, cmap='gist_rainbow')
+    ax[0].plot(np.linspace(x_min, x_max), 1 / 10 * np.linspace(x_min, x_max) ** 2 - 3, color='blue')  # equality constraint
+    ax[0].plot(np.linspace(x_min, x_max), 1 / 4 * np.linspace(x_min, x_max), color='purple')  # inequality constraint
+
+    # optimal solution: S1(5|-1/2)
+    ax[0].plot(5, -1/2, color='blue', marker="x", markersize=8)
+    ax[0].annotate("S1(5, -1/2)", (5 + 0.2, -1/2 + 0.2), color='blue')
+
+    # TODO: add labels for constraints
 
 
 def task2():
