@@ -68,20 +68,20 @@ def plot_1c(ax):
     ax[2].contourf(x1, x2, (x1 - 1)**2 + x1 * x2**2 - 2, 100, cmap='gist_rainbow')
     ax[2].add_patch(Circle((0, 0), radius=2, color='purple', fill=False))  # inequality constraint: x1**2 + x2**2 <= 4
 
-    ax[2].plot(0, sqrt(2), color='green', marker="x", markersize=8)
-    ax[2].annotate("S1(0|sqrt(2))", (0 + 0.2, sqrt(2) + 0.2), color='green')
-
-    ax[2].plot(0, -sqrt(2), color='green', marker="x", markersize=8)
-    ax[2].annotate("S2(0|-sqrt(2))", (0 + 0.2, -sqrt(2) + 0.2), color='green')
-
-    ax[2].plot(1, 0, color='green', marker="x", markersize=8)
-    ax[2].annotate("S3(1|0)", (1 + 0.2, 0 + 0.2), color='green')
-
     ax[2].plot(-0.55, 1.92, color='green', marker="x", markersize=8)
-    ax[2].annotate("S4(-0.55|1.92)", (-0.55 + 0.2, 1.92 + 0.2), color='green')
+    ax[2].annotate("S1(-0.55|1.92)", (-0.55 + 0.2, 1.92 + 0.2), color='green')
 
     ax[2].plot(-0.55, -1.92, color='green', marker="x", markersize=8)
-    ax[2].annotate("S5(-0.55|-1.92)", (-0.55 - 0.3, -1.92 - 0.3), color='green')
+    ax[2].annotate("S2(-0.55|-1.92)", (-0.55 - 0.3, -1.92 - 0.3), color='green')
+
+    ax[2].plot(0, sqrt(2), color='green', marker="x", markersize=8)
+    ax[2].annotate("S3(0|sqrt(2))", (0 + 0.2, sqrt(2) + 0.2), color='green')
+
+    ax[2].plot(0, -sqrt(2), color='green', marker="x", markersize=8)
+    ax[2].annotate("S4(0|-sqrt(2))", (0 + 0.2, -sqrt(2) + 0.2), color='green')
+
+    ax[2].plot(1, 0, color='green', marker="x", markersize=8)
+    ax[2].annotate("S5(1|0)", (1 + 0.2, 0 + 0.2), color='blue')
 
     # TODO: add labels for constraints
 
