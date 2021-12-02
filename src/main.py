@@ -80,7 +80,7 @@ def plot_1c(ax):
     ax[2].plot(0, -sqrt(2), color='green', marker="x", markersize=8)
     ax[2].annotate("S4(0|-sqrt(2))", (0 + 0.2, -sqrt(2) + 0.2), color='green')
 
-    ax[2].plot(1, 0, color='green', marker="x", markersize=8)
+    ax[2].plot(1, 0, color='blue', marker="x", markersize=8)
     ax[2].annotate("S5(1|0)", (1 + 0.2, 0 + 0.2), color='blue')
 
     # TODO: add labels for constraints
@@ -131,6 +131,17 @@ def task2():
     """ Start of your code
     """
 
+    x_min = -3
+    x_max = 3
+    y_min = -3
+    y_max = 7
+    x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
+    ax.contourf(x1, x2, (x1 - 1)**2 - x1 * x2, 100, cmap='gist_rainbow')
+    ax.plot(np.linspace(x_min, x_max), -np.linspace(x_min, x_max) + 4, color='blue')  # equality constraint
+
+    ax.plot(3/2, 5/2, color='blue', marker="x", markersize=8)
+    ax.annotate("S1(3/2|5/2)", (3/2 + 0.2, 5/2 + 0.2), color='blue')  # optimal solution
+
     """ End of your code
     """
     return fig
@@ -149,12 +160,19 @@ def task3():
         x = fc['data'][:,0]
         y = fc['data'][:,1]
         z = fc['data'][:,2]
+        print('x')
 
     N = len(x)
     A = None
-    x = None
-    """ Start of your code
+    # x = None
+    """ Start of your codey
     """
+
+    ax.scatter(x, y, z)
+    ax.set_xlabel('Xn')
+    ax.set_ylabel('Yn')
+    ax.set_zlabel('Zn')
+
 
     """ End of your code
     """
@@ -162,7 +180,8 @@ def task3():
 
 
 if __name__ == '__main__':
-    tasks = [task1, task2, task3]
+    # tasks = [task1, task2, task3]
+    tasks = [task1, task2]
 
     pdf = PdfPages('figures.pdf')
     for task in tasks:
