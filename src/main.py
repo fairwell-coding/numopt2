@@ -131,20 +131,50 @@ def task2():
     """ Start of your code
     """
 
+    __plot_task2(ax)
+    xks = __calculate_augmented_lagrangian_iteratively()
+    __plot_iteratively_approximated_augmented_lagrangian(ax, xks)
+
+    """ End of your code
+    """
+    return fig
+
+
+def __plot_iteratively_approximated_augmented_lagrangian(ax, xks):
+    for xk in xks:  # iteratively approximated points xk = (x1, x2)
+        ax.plot(xk[0], xk[1], color='red', marker="o", markersize=8)
+        ax.annotate("S1({0}|{1})".format(xk[0], xk[1]), (xk[0] + 0.2, xk[1] + 0.2), color='red')
+
+
+def __calculate_augmented_lagrangian_iteratively():
+    # initial values
+    lambda_k_minus_1 = 1
+    alpha = 0.51
+    k = 0
+    xk_over_iterations = []
+
+    while k < 20:  # 1, 1 -> (1,3)
+        x1 = lambda_k_minus_1
+        x2 = 4 - lambda_k_minus_1
+        lambda_k = alpha * (x1 + x2 - 4) + lambda_k_minus_1
+        lambda_k_minus_1 = lambda_k
+        xk_over_iterations.append((x1, x2))
+        k += 1
+
+    return xk_over_iterations
+
+
+def __plot_task2(ax):
     x_min = -3
     x_max = 3
     y_min = -3
     y_max = 7
     x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
-    ax.contourf(x1, x2, (x1 - 1)**2 - x1 * x2, 100, cmap='gist_rainbow')
+    ax.contourf(x1, x2, (x1 - 1) ** 2 - x1 * x2, 100, cmap='gist_rainbow')
     ax.plot(np.linspace(x_min, x_max), -np.linspace(x_min, x_max) + 4, color='blue')  # equality constraint
 
-    ax.plot(3/2, 5/2, color='blue', marker="x", markersize=8)
-    ax.annotate("S1(3/2|5/2)", (3/2 + 0.2, 5/2 + 0.2), color='blue')  # optimal solution
-
-    """ End of your code
-    """
-    return fig
+    ax.plot(3 / 2, 5 / 2, color='blue', marker="x", markersize=8)
+    ax.annotate("S1(3/2|5/2)", (3 / 2 + 0.2, 5 / 2 + 0.2), color='blue')  # optimal solution
 
 
 def task3():
@@ -164,7 +194,7 @@ def task3():
 
     N = len(x)
     A = None
-    # x = None
+    # x_solutions = None
     """ Start of your codey
     """
 
