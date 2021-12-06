@@ -16,6 +16,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from scipy.linalg import inv
 from matplotlib.backends.backend_pdf import PdfPages
 from typing import Callable
+import numpy.polynomial as pol
 
 
 def task1():
@@ -183,8 +184,8 @@ def task3():
     """ Least Squares Fitting
         ax 3D scatter plot and wireframe of the computed solution
     """
-    fig = plt.figure(figsize=(8,8))
-    ax = fig.add_subplot(111, projection='3d')
+    fig = plt.figure(figsize=(8,24))  # remark: We adjusted the figsize of the provided code in order to add additional plots for (x,z) and (y,z) projections to evaluate reasonable dimension values
+    # for NLS
     fig.suptitle('Task 3 - Data points vs. LS solution', fontsize=16)
 
     with np.load('data.npz') as fc:
@@ -193,26 +194,70 @@ def task3():
         z = fc['data'][:,2]
         print('x')
 
-    N = len(x)
-    A = None
-    # x_solutions = None
     """ Start of your codey
     """
 
+    __plot_data_3dscatter(fig, x, y, z)
+    __plot_xz_projection(fig, x, z)
+    __plot_yz_projection(fig, y, z)
+
+    A, approximated_coefficients = __calculate_bivariate_nonlinear_polynomial_function_using_leastsquares(x, y, z)
+    __plot_estimated_polynomial_function(A, approximated_coefficients)
+
+    """ End of your code
+    """
+    return fig, A, approximated_coefficients
+
+
+def __plot_yz_projection(fig, y, z):
+    """ Plot (y,z)-projection: allows us to evaluate the relation between y and z, i.e. to estimate the polynomial dimension of x needed to approximate the corresponding z value based on y
+    """
+
+    ax = fig.add_subplot(313)
+    ax.plot(y, z, 'go')
+    ax.title.set_text('(y,z) data projection')
+    ax.set_xlabel('y coordinates')
+    ax.set_ylabel('z coordinates')
+    return fig
+
+
+def __plot_xz_projection(fig, x, z):
+    """ Plot (x,z)-projection: allows us to evaluate the relation between x and z, i.e. to estimate the polynomial dimension of x needed to approximate the corresponding z value based on x
+    """
+
+    ax = fig.add_subplot(312)
+    ax.plot(x, z, 'go')
+    ax.title.set_text('(x,z) data projection')
+    ax.set_xlabel('x coordinates')
+    ax.set_ylabel('z coordinates')
+
+
+def __calculate_bivariate_nonlinear_polynomial_function_using_leastsquares(x, y, z):
+    x_dim = 1
+    y_dim = 1
+    A = pol.polynomial.polyvander2d(x, y, [x_dim, y_dim])
+    approximated_coefficients = np.matmul(np.matmul(np.linalg.inv(np.matmul(A.transpose(), A)), A.transpose()), z)  # Calculate approximated least squares coefficients using the
+    # Moore-Penrose-Inverse, i.e. Ax = b --> x = (X^t * X)^-1 * X^t * y
+
+    return A, approximated_coefficients
+
+
+def __plot_estimated_polynomial_function(A, approximated_coefficients):
+    z_approximated = np.matmul(A, approximated_coefficients)
+
+
+def __plot_data_3dscatter(fig, x, y, z):
+    ax = fig.add_subplot(311, projection='3d')
     ax.scatter(x, y, z)
+    ax.title.set_text('3d data points (blue) vs their NLS approximated bivariate polynomial data points')
     ax.set_xlabel('Xn')
     ax.set_ylabel('Yn')
     ax.set_zlabel('Zn')
 
 
-    """ End of your code
-    """
-    return fig, A, x
-
-
 if __name__ == '__main__':
     # tasks = [task1, task2, task3]
-    tasks = [task1, task2]
+    tasks = [task3]
 
     pdf = PdfPages('figures.pdf')
     for task in tasks:
