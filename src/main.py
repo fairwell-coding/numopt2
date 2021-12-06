@@ -147,21 +147,22 @@ def __plot_iteratively_approximated_augmented_lagrangian(ax, xks):
 
 
 def __calculate_augmented_lagrangian_iteratively():
-    # initial values
-    lambda_k_minus_1 = 1
-    alpha = 0.51
-    k = 0
-    xk_over_iterations = []
+    lambda_k = 1.5  # initialize lambda_k value with reasonable value
+    alpha = 0.51  # choose alpha > 0.5
 
-    while k < 20:  # 1, 1 -> (1,3)
-        x1 = lambda_k_minus_1
-        x2 = 4 - lambda_k_minus_1
-        lambda_k = alpha * (x1 + x2 - 4) + lambda_k_minus_1
-        lambda_k_minus_1 = lambda_k
-        xk_over_iterations.append((x1, x2))
+    k = 0
+    xks = []
+    lambdas = []
+
+    while k < 20:
+        x1 = lambda_k
+        x2 = 3 * lambda_k - 2
+        lambda_k = alpha * (x1 + x2 - 4) + lambda_k
+        xks.append((x1, x2))
+        lambdas.append(lambda_k)
         k += 1
 
-    return xk_over_iterations
+    return xks
 
 
 def __plot_task2(ax):
