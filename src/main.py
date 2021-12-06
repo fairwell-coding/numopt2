@@ -12,10 +12,7 @@ from math import sqrt
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
-from mpl_toolkits.mplot3d import Axes3D
-from scipy.linalg import inv
 from matplotlib.backends.backend_pdf import PdfPages
-from typing import Callable
 import numpy.polynomial as pol
 
 
@@ -67,24 +64,22 @@ def __plot_1c(ax):
     y_max = 3
     x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
     ax[2].contourf(x1, x2, (x1 - 1)**2 + x1 * x2**2 - 2, 100, cmap='gist_rainbow')
-    ax[2].add_patch(Circle((0, 0), radius=2, color='purple', fill=False))  # inequality constraint: x1**2 + x2**2 <= 4
+    ax[2].add_patch(Circle((0, 0), radius=2, color='yellow', fill=False))  # inequality constraint: x1**2 + x2**2 <= 4
 
     ax[2].plot(-0.55, 1.92, color='green', marker="x", markersize=8)
-    ax[2].annotate("S1(-0.55|1.92)", (-0.55 + 0.2, 1.92 + 0.2), color='green')
+    ax[2].annotate("S1(-0.55|1.92)", (-0.55 - 0.8, 1.92 + 0.3), color='green')
 
     ax[2].plot(-0.55, -1.92, color='green', marker="x", markersize=8)
-    ax[2].annotate("S2(-0.55|-1.92)", (-0.55 - 0.3, -1.92 - 0.3), color='green')
+    ax[2].annotate("S2(-0.55|-1.92)", (-0.55 - 0.8, -1.92 - 0.4), color='green')
 
     ax[2].plot(0, sqrt(2), color='green', marker="x", markersize=8)
-    ax[2].annotate("S3(0|sqrt(2))", (0 + 0.2, sqrt(2) + 0.2), color='green')
+    ax[2].annotate("S3(0|sqrt(2))", (0 - 0.6, sqrt(2) - 0.4), color='green')
 
     ax[2].plot(0, -sqrt(2), color='green', marker="x", markersize=8)
-    ax[2].annotate("S4(0|-sqrt(2))", (0 + 0.2, -sqrt(2) + 0.2), color='green')
+    ax[2].annotate("S4(0|-sqrt(2))", (0 - 0.6, -sqrt(2) + 0.3), color='green')
 
     ax[2].plot(1, 0, color='blue', marker="x", markersize=8)
-    ax[2].annotate("S5(1|0)", (1 + 0.2, 0 + 0.2), color='blue')
-
-    # TODO: add labels for constraints
+    ax[2].annotate("S5(1|0)", (1 - 0.3, 0 + 0.2), color='blue')
 
 
 def __plot_1b(ax):
@@ -94,14 +89,12 @@ def __plot_1b(ax):
     y_max = 7
     x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
     ax[1].contourf(x1, x2, x1**2 + x2**2, 100, cmap='gist_rainbow')
-    ax[1].plot(np.linspace(x_min, x_max), 3 - np.linspace(x_min, x_max), color='purple')  # inequality constraint
-    ax[1].plot(np.linspace(x_min, x_max), np.linspace(2, 2), color='purple')  # inequality constraint
+    ax[1].plot(np.linspace(x_min, x_max), 3 - np.linspace(x_min, x_max), color='yellow')  # inequality constraint
+    ax[1].plot(np.linspace(x_min, x_max), np.linspace(2, 2), color='yellow')  # inequality constraint
 
     # optimal solution: S1(1|2)
     ax[1].plot(1, 2, color='blue', marker="x", markersize=8)
-    ax[1].annotate("S1(1|2)", (1 + 0.2, 2 + 0.2), color='blue')
-
-    # TODO: add labels for constraints
+    ax[1].annotate("S1(1|2)", (1 + 0.2, 2 + 0.4), color='blue')
 
 
 def __plot_1a(ax):
@@ -111,12 +104,12 @@ def __plot_1a(ax):
     y_max = 7
     x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
     ax[0].contourf(x1, x2, x2 - x1, 100, cmap='gist_rainbow')
-    ax[0].plot(np.linspace(x_min, x_max), 1 / 10 * np.linspace(x_min, x_max) ** 2 - 3, color='blue')  # equality constraint
-    ax[0].plot(np.linspace(x_min, x_max), 1 / 4 * np.linspace(x_min, x_max), color='purple')  # inequality constraint
+    ax[0].plot(np.linspace(x_min, x_max), 1 / 10 * np.linspace(x_min, x_max) ** 2 - 3, color='red')  # equality constraint
+    ax[0].plot(np.linspace(x_min, x_max), 1 / 4 * np.linspace(x_min, x_max), color='yellow')  # inequality constraint
 
     # optimal solution: S1(5|-1/2)
     ax[0].plot(5, -1/2, color='blue', marker="x", markersize=8)
-    ax[0].annotate("S1(5, -1/2)", (5 + 0.2, -1/2 + 0.2), color='blue')
+    ax[0].annotate("S1(5, -1/2)", (5 + 0.8, -1/2 + 0), color='blue')
 
     # TODO: add labels for constraints
 
@@ -143,8 +136,8 @@ def task2():
 
 def __plot_iteratively_approximated_augmented_lagrangian(ax, xks):
     for xk in xks:  # iteratively approximated points xk = (x1, x2)
-        ax.plot(xk[0], xk[1], color='red', marker="o", markersize=8)
-        ax.annotate("S1({0}|{1})".format(xk[0], xk[1]), (xk[0] + 0.2, xk[1] + 0.2), color='red')
+        ax.plot(xk[0], xk[1], color='green', marker="o", markersize=4)
+    ax.annotate("Iteratively calculated solutions", (3 / 2 - 1, 5 / 2 + 1.3), color='green')
 
 
 def __calculate_augmented_lagrangian_iteratively():
@@ -173,9 +166,10 @@ def __plot_task2(ax):
     y_max = 7
     x1, x2 = np.meshgrid(np.linspace(x_min, x_max), np.linspace(y_min, y_max))
     ax.contourf(x1, x2, (x1 - 1) ** 2 - x1 * x2, 100, cmap='gist_rainbow')
-    ax.plot(np.linspace(x_min, x_max), -np.linspace(x_min, x_max) + 4, color='blue')  # equality constraint
+    ax.plot(np.linspace(x_min, x_max), -np.linspace(x_min, x_max) + 4, color='red')  # equality constraint
 
-    ax.plot(3 / 2, 5 / 2, color='blue', marker="x", markersize=8)
+    ax.plot(3 / 2, 5 / 2, color='blue', marker="x", markersize=15)
+    ax.plot(3 / 2, 5 / 2, color='blue', marker="o", markersize=8)
     ax.annotate("S1(3/2|5/2)", (3 / 2 + 0.2, 5 / 2 + 0.2), color='blue')  # optimal solution
 
 
@@ -264,8 +258,7 @@ def __plot_data_3dscatter(fig, x, y, z):
 
 
 if __name__ == '__main__':
-    # tasks = [task1, task2, task3]
-    tasks = [task3]
+    tasks = [task1, task2, task3]
 
     pdf = PdfPages('figures.pdf')
     for task in tasks:
