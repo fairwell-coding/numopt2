@@ -141,7 +141,7 @@ def __plot_iteratively_approximated_augmented_lagrangian(ax, xks):
 
 
 def __calculate_augmented_lagrangian_iteratively():
-    lambda_k = 1  # initialize lambda_k value with reasonable value
+    lambda_k = 0  # initialize lambda_k value with reasonable value
     alpha = 0.6  # choose alpha > 0.5
 
     k = 0
@@ -185,7 +185,6 @@ def task3():
         x = fc['data'][:,0]
         y = fc['data'][:,1]
         z = fc['data'][:,2]
-        print('x')
 
     """ Start of your codey
     """
